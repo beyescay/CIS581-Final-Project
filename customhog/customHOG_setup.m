@@ -13,13 +13,13 @@ global cR;
 
 
 %% sampleImage is an example image from the train set to ascertain dimension calculations
-% sampleImg = single(read(dataSet,1));
-% % create the mag, idxing template - 
-% [numR, numC,~] = size(sampleImg);
-% sampleImg = single(imresize(sampleImg, [RESIZE_R RESIZE_C]));
-% if ((size(sampleImg,3)  ~= 1))
-%     sampleImg = rgb2gray(sampleImg);
-% end
+sampleImg = reshape(imageFaces(1,:),[128 128 3]);
+% create the mag, idxing template - 
+[numR, numC,~] = size(sampleImg);
+sampleImg = single(imresize(sampleImg, [RESIZE_R RESIZE_C]));
+if ((size(sampleImg,3)  ~= 1))
+    sampleImg = rgb2gray(sampleImg);
+end
     
 im_id_template  = reshape((1:RESIZE_C*RESIZE_R)',[RESIZE_R, RESIZE_C]);
 

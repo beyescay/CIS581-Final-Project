@@ -4,9 +4,9 @@ clc
 
 %Load all the face and non-face images
 addpath(sprintf('%s/customhog/',pwd))
-load('imageFaces.mat')
-load('imageNonFaces.mat')
-load('idx.mat')
+load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageFaces.mat')
+load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageNonFaces.mat')
+load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/idx.mat')
 customHOG_setup;
 
 %Split the data into training and testing set
@@ -17,8 +17,9 @@ trueTestLabels = [ones(size(idxTestFaces,1),1); zeros(size(idxTestNonFaces,1),1)
 
 %Extract hog features for training set
 tic
+disp('Getting Training HOG Features')
 for i=1:size(trainImages);
-    [hogFeatures,imhog] = customHog(reshape(trainImages(i,:),[128 128 3]));
+    [hogFeatures,imhog] = customHOG(reshape(trainImages(i,:),[128 128 3]));
     trainFeatures(i,:) = hogFeatures;
 end
 extractFeaturesTimeTrain = toc;
@@ -47,7 +48,7 @@ model = svmtrain(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], sprint
 
 tic
 for i=1:size(trainImages);
-    [hogFeatures,imhog] = customHog(reshape(trainImages(i,:),[128 128 3]));
+    [hogFeatures,imhog] = customHOG(reshape(trainImages(i,:),[128 128 3]));
     trainFeatures(i,:) = hogFeatures;
 end
 extractFeaturesTimeTest = toc;
