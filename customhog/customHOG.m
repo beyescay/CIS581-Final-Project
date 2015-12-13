@@ -18,7 +18,7 @@ global cC;
 global cR;
 global mag_page;
 global ang_page;
-tic
+% tic
 
     currImg = single(img);
     currImg = imresize(currImg, [RESIZE_R RESIZE_C]);
@@ -122,10 +122,10 @@ tic
     tempBins = cellfun(myfun,blockCelled,'UniformOutput',0);
     tempBins = cell2mat(tempBins);
     hog_features  = reshape(tempBins,[1,BLOCKM_R*BLOCKM_C*4*NUM_BINS]);
-    toc
+%     toc
     
     tt = reshape(tempBins,[BLOCKM_R BLOCKM_C 4*NUM_BINS]);
     tt = single(tt);
-    imhog = vl_hog('render', tt, 'verbose', 'variant', 'dalaltriggs');
+    imhog = vl_hog('render', tt, 'variant', 'dalaltriggs');
     
 end

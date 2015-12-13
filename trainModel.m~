@@ -48,8 +48,7 @@ model = svmtrain(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], sprint
 
 
 tic
-for i=1:size(testImages,1);
-    disp(sprintf('Testing Image:%i',i));
+for i=1:size(testImages);
     [hogFeatures,imhog] = customHOG(reshape(testImages(i,:),[128 128 3]));
     testFeatures(i,:) = hogFeatures;
 end
@@ -64,7 +63,7 @@ disp(sprintf('Time for testing Kernelization: %f',kernelTime));
 tic
 [testLabels,accTest,valsTest] = svmpredict(trueTestLabels, [(1:size(kerneltest,1))' kerneltest], model);
 predictTime = toc;
-disp(sprintf('Time for predicting 2000 images: %f',predictTime));
+disp(sprintf('Time for predicting 1500 images: %f',predictTime));
 
 [trainLabels,accTrain,valsTrain] = svmpredict(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], model);
 
