@@ -3,6 +3,7 @@ clear all
 clc
 
 %Load all the face and non-face images
+addpath('./libsvm')
 addpath(sprintf('%s/customhog/',pwd))
 load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageFaces.mat')
 load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageNonFaces.mat')
@@ -31,10 +32,12 @@ disp(sprintf('Time for Extracting Hog features of Training Set: %f',extractFeatu
 tic
 kernelTrain = kernel_poly(trainFeatures, trainFeatures,1);
 kernelTime = toc;
-disp(sprintf('Time for training Kernelization: %f',kernelTime));
+disp(sprintf('Time for training set Kernelization: %f',kernelTime));
 % Use built-in libsvm cross validation to choose the C regularization
 % parameter.
 
+addpath('./libsvm')
+tic
 crange = 10.^[-10:2:3];
 for i = 1:numel(crange)
     acc(i) = svmtrain(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], sprintf('-t 4 -v 10 -c %g', crange(i)));
@@ -42,10 +45,11 @@ end
 [~, bestc] = max(acc);
 fprintf('Cross-val chose best C = %g\n', crange(bestc));
 
-
 % Train and evaluate SVM classifier using libsvm
 model = svmtrain(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], sprintf('-t 4 -c %g', crange(bestc)));
+traintime = toc;
 
+disp(sprintf('Time for training : %f',traintime));
 
 tic
 for i=1:size(testImages,1);
@@ -62,11 +66,11 @@ kernelTime = toc;
 disp(sprintf('Time for testing Kernelization: %f',kernelTime));
 
 tic
-[testLabels,accTest,valsTest] = svmpredict(trueTestLabels, [(1:size(kerneltest,1))' kerneltest], model);
+[testLabels,accTest,valsTest] = svmpredict(trueTestLabels, [(1:size(kernelTest,1))' kernelTest], model);
 predictTime = toc;
 disp(sprintf('Time for predicting 2000 images: %f',predictTime));
 
 [trainLabels,accTrain,valsTrain] = svmpredict(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], model);
 
-test_accuracy = mean(testlabels==trueTestLabels);
+test_accuracy = mean(testLabels==trueTestLabels);
 train_accuracy = mean(trainLabels==trueTrainLabels);
