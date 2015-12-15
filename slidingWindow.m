@@ -1,0 +1,99 @@
+%% This code is a non-vectorised implementation of the sliding window approach
+
+%  accepts am image and performs the sliding window classification on that
+
+% DESCRIPTOR_SIZE = 128;
+% HALF_DESC_BLK_SIZE = 64;
+% 
+% % get size of the image
+% [numR, numC, ~ ] = size(img);
+% 
+% for iterC = 1 : HALF_DESC_BLK_SIZE : numC - HALF_DESC_BLK_SIZE
+%     
+%     for iterR = 1 : HALF_DESC_BLK_SIZE : numR - HALF_DESC_BLK_SIZE
+%         
+%         patch =  img(iterR : iterR + HALF_DESC_BLK_SIZE, iterC : iterC + HALF_DESC_BLK_SIZE,:);
+%         
+%         % predict through SVM
+%         
+%         
+%         
+%         
+%     end
+%        
+% end
+
+
+%% This is the vectorized attempt at the sliding window
+%  This implementation assumes color images 
+
+
+cellReshape = @reshape_intoWindows;
+
+image = imread('scene.jpg');
+[numR, numC, ~] = size(image);
+hWindowSize = 64;
+
+% alter image to fit the required sliding window 
+closestR = round(numR/hWindowSize);
+closestC = round(numC/hWindowSize);
+
+image = imresize(image, [closestR*hWindowSize closestC*hWindowSize]);
+
+numR = closestR*hWindowSize;
+numC = closestC*hWindowSize;
+
+WINDOW_SIZE = 128;
+hWindowSize = WINDOW_SIZE/2;
+hWindowNum = numR*numC/(hWindowSize^2);
+
+
+motherTemplate_3d = reshape((1:numR*numC*3),[numR numC 3]);
+motherTemplate_2d = reshape( (1:numR*numC),[numR numC] );
+
+
+hWindow_blk = mat2cell(motherTemplate_2d, hWindowSize.*ones((numR/hWindowSize),1),...
+                                          hWindowSize.*ones((numC/hWindowSize),1));
+hWindow_blk = cell2mat(reshape(hWindow_blk,hWindowNum,1));
+hWindow_idx = hWindow_blk(1:hWindowSize:size(hWindow_blk,1),1);
+
+% hWindow patch 
+hWindow_patch = hWindow_blk(1:hWindowSize,:) - 1;
+hWindow_adder = reshape(hWindow_patch,[hWindowSize*hWindowSize, 1])';
+hWindow_adder_spread = repmat(hWindow_adder, hWindowNum,1);
+hWindow_idx = repmat(hWindow_idx,1,hWindowSize*hWindowSize);
+hWindowContent_idx = hWindow_adder_spread + hWindow_idx;
+
+% now for the full window - concatenatiom of 4-hWindow
+hWindow_numR = numR/hWindowSize;
+hWindow_numC = numC/hWindowSize;
+windowNumR = hWindow_numR-1;
+windowNumC = hWindow_numC-1;
+
+windowLayout = reshape((1:hWindow_numR*hWindow_numC),[hWindow_numR hWindow_numC]);
+windowLayout = windowLayout(1:end-1, 1:end-1);
+
+window_hWindow_adder = [0 1 hWindow_numR 1+hWindow_numR];
+window_hWindow_content_idx = reshape(windowLayout,[windowNumR*windowNumC,1]);
+window_hWindow_content_idx = repmat(window_hWindow_content_idx,1,4);
+window_hWindow_adder_spread = repmat(window_hWindow_adder,windowNumR*windowNumC,1);
+window_hWindow_content = window_hWindow_content_idx + window_hWindow_adder_spread;
+
+
+window_pxl = hWindowContent_idx(reshape(window_hWindow_content', windowNumC*...
+                                        windowNumR*4 ,1),:);
+windowCelled = mat2cell(window_pxl,4.*ones(windowNumR*windowNumC,1),hWindowSize*hWindowSize);
+
+windowUnrolled  = cellfun(cellReshape, windowCelled,'UniformOutput',0);
+windowUnrolled = cell2mat(windowUnrolled);
+
+% extending into 3rd dimension
+add_dim1 = zeros(1,size(windowUnrolled,2));
+add_dim2 = zeros(1,size(windowUnrolled,2)) + numR*numC;
+add_dim3 = zeros(1,size(windowUnrolled,2)) + 2*numR*numC;
+net_dim_adder = [add_dim1 add_dim2 add_dim3];
+
+windowUnrolled_dim3 = repmat(windowUnrolled,1,3);
+net_dim_adder_extend = repmat(net_dim_adder,windowNumC*windowNumR,1);
+final_winow_idx = windowUnrolled_dim3 + net_dim_adder_extend;
+

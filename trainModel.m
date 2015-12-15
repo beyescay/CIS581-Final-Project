@@ -5,11 +5,11 @@ clc
 %Load all the face and non-face images
 addpath('./libsvm')
 addpath(sprintf('%s/customhog/',pwd))
-load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageFaces.mat')
-load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageNonFaces.mat')
-load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/idx.mat')
+load('imageFaces.mat')
+load('imageNonFaces.mat')
+load('idx.mat')
 customHOG_setup;
-run('vlfeat-0.9.20/toolbox/vl_setup')
+run('/home1/p/paritosh/Documents/vlfeat-0.9.20/toolbox/vl_setup')
 %Split the data into training and testing set
 trainImages = [imageFaces(idxTrainFaces,:); imageNonFaces(idxTrainNonFaces,:)];
 testImages = [imageFaces(idxTestFaces,:); imageNonFaces(idxTestNonFaces,:)];
