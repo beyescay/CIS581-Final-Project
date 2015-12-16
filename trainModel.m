@@ -51,6 +51,7 @@ traintime = toc;
 
 disp(sprintf('Time for training : %f',traintime));
 
+%%Testing 
 tic
 for i=1:size(testImages,1);
     disp(sprintf('Testing Image:%i',i));

@@ -26,11 +26,11 @@
 
 %% This is the vectorized attempt at the sliding window
 %  This implementation assumes color images 
-
+tic
 
 cellReshape = @reshape_intoWindows;
 
-image = imread('scene.jpg');
+image = mov(33).cdata;
 [numR, numC, ~] = size(image);
 hWindowSize = 64;
 
@@ -97,3 +97,4 @@ windowUnrolled_dim3 = repmat(windowUnrolled,1,3);
 net_dim_adder_extend = repmat(net_dim_adder,windowNumC*windowNumR,1);
 final_winow_idx = windowUnrolled_dim3 + net_dim_adder_extend;
 
+toc
