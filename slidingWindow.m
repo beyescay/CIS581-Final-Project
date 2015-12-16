@@ -32,8 +32,9 @@ cellReshape = @reshape_intoWindows;
 
 image = imread('scene.jpg');
 [numR, numC, ~] = size(image);
-hWindowSize = 64;
+hWindowSize = 32;
 
+tic
 % alter image to fit the required sliding window 
 closestR = round(numR/hWindowSize);
 closestC = round(numC/hWindowSize);
@@ -44,7 +45,7 @@ numR = closestR*hWindowSize;
 numC = closestC*hWindowSize;
 
 WINDOW_SIZE = 128;
-hWindowSize = WINDOW_SIZE/2;
+
 hWindowNum = numR*numC/(hWindowSize^2);
 
 
@@ -96,4 +97,4 @@ net_dim_adder = [add_dim1 add_dim2 add_dim3];
 windowUnrolled_dim3 = repmat(windowUnrolled,1,3);
 net_dim_adder_extend = repmat(net_dim_adder,windowNumC*windowNumR,1);
 final_winow_idx = windowUnrolled_dim3 + net_dim_adder_extend;
-
+toc

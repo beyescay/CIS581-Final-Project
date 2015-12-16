@@ -21,7 +21,7 @@ totalFeatureExtractorStartTime = tic;
 
 disp('Getting Training HOG Features')
 for i=1:size(trainImages,1);
-    disp(sprintf('Training Image:%i',i));
+   % disp(sprintf('Training Image:%i',i));
     [hogFeatures,imhog] = customHOG(reshape(trainImages(i,:),[128 128 3]));
     trainFeatures(i,:) = hogFeatures;
 end
@@ -53,7 +53,7 @@ disp(sprintf('Time for training : %f',traintime));
 
 tic
 for i=1:size(testImages,1);
-    disp(sprintf('Testing Image:%i',i));
+   % disp(sprintf('Testing Image:%i',i));
     [hogFeatures,imhog] = customHOG(reshape(testImages(i,:),[128 128 3]));
     testFeatures(i,:) = hogFeatures;
 end
