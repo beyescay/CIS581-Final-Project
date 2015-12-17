@@ -45,7 +45,7 @@ global ang_page;
         
   
          mag_page(:,:,i) = hypot(ix(:,:,i),iy(:,:,i));
-         ang_page(:,:,i) = atan2d(-iy(:,:,i),ix(:,:,i));
+         ang_page(:,:,i) = atan2d(iy(:,:,i),ix(:,:,i));
     end  
     
      
@@ -57,11 +57,9 @@ global ang_page;
 
                             
     % change the range of the angles
-    angles(angles > 179 ) = angles(angles > 179) - 179;
-    angles(angles <  0) = angles(angles < 0) + 179;
-    angles(angles < 10) = 10;
-    angles(angles > 170) = 169;
-    angles = angles + 10;
+    angles(angles < 0) = angles(angles < 0) + 180;
+	angles = angles + 10;
+    
     
     % the magnitude of the gradient - arranged by cell
     magGradient = max_mag_page;       
@@ -74,6 +72,7 @@ global ang_page;
     
     % to this mag matrix, obtain the quotient and remainder
     binCentres_rows = floor(reshapedAngles./20);
+    binCentres_rows(binCentres_rows == 0) = 9;
     R = 1 - rem(reshapedAngles,20)./20;
     votedMag_lower = magGradient.*R;
     
@@ -96,6 +95,7 @@ global ang_page;
     
     % do the same for the upper part of the bilinear interpolation
     binCentres_rows = ceil(reshapedAngles./20);
+    binCentres_rows(binCentres_rows == 10) = 1;
     R = rem(reshapedAngles,20)./20;
     votedMag_upper = magGradient.*R;
     

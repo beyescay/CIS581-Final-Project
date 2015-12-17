@@ -39,7 +39,7 @@ disp(sprintf('Time for training set Kernelization: %f',kernelTime));
 
 
 
-
+%%
 tic
 crange = 10.^[-10:2:3];
 kernelTrain = double(kernelTrain);

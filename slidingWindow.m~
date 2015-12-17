@@ -1,5 +1,5 @@
-function final_window_idx = slidingWindow(image)
-%This code is a non-vectorised implementation of the sliding window approach
+function final_window_id
+ This code is a non-vectorised implementation of the sliding window approach
 
 %  This implementation assumes color images 
 
@@ -7,8 +7,9 @@ function final_window_idx = slidingWindow(image)
 
 cellReshape = @reshape_intoWindows;
 tic
+image = mov(300).cdata;
 [numR, numC, ~] = size(image);
-hWindowSize = 128;
+hWindowSize = 32;
 
 % alter image to fit the required sliding window 
 closestR = round(numR/hWindowSize);
@@ -71,5 +72,4 @@ net_dim_adder = [add_dim1 add_dim2 add_dim3];
 windowUnrolled_dim3 = repmat(windowUnrolled,1,3);
 net_dim_adder_extend = repmat(net_dim_adder,windowNumC*windowNumR,1);
 final_window_idx = windowUnrolled_dim3 + net_dim_adder_extend;
-
 toc
