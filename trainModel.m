@@ -21,7 +21,7 @@ totalFeatureExtractorStartTime = tic;
 
 disp('Getting Training HOG Features')
 for i=1:size(trainImages,1);
-    disp(sprintf('Training Image:%i',i));
+   % disp(sprintf('Training Image:%i',i));
     [hogFeatures,imhog] = customHOG(reshape(trainImages(i,:),[128 128 3]));
 % [hogFeatures,imhog] = extractHOGFeatures(reshape(trainImages(i,:),[128 128 3]),'CellSize',[4 4]);
     trainFeatures(i,:) = hogFeatures;
@@ -54,7 +54,11 @@ model = svmtrain(trueTrainLabels, [(1:size(kernelTrain,1))' kernelTrain], sprint
 traintime = toc;
 
 disp(sprintf('Time for training : %f',traintime));
+
 %%
+
+
+%%Testing 
 tic
 
 for i=1:size(testImages,1);

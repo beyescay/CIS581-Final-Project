@@ -1,33 +1,14 @@
-<<<<<<< HEAD
-function final_window_idx = slidingWindow(image)
-%This code is a non-vectorised implementation of the sliding window approach
+function netImageContentAllWindows = customSlide(image)
 
-=======
-%% This is the vectorized attempt at the sliding window
->>>>>>> ea866be04ef4fbd5bf88bb451e46d97b319b7e98
-%  This implementation assumes color images 
-tic
-
-% load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/frames.mat')
-
-<<<<<<< HEAD
-cellReshape = @reshape_intoWindows;
-tic
-[numR, numC, ~] = size(image);
-hWindowSize = 128;
-
-=======
 global discretization;
 global desc_size;
-desc_size = 128;
+desc_size = 128;s
 
-image = imread('scene.jpg');
 [numR, numC, ~] = size(image);
 miniWindowSize = 32;
 discretization = desc_size/miniWindowSize;
 cellReshape = @reshape_intoWindows;
 tic
->>>>>>> ea866be04ef4fbd5bf88bb451e46d97b319b7e98
 % alter image to fit the required sliding window 
 closestR = round(numR/miniWindowSize);
 closestC = round(numC/miniWindowSize);
@@ -37,17 +18,10 @@ image = imresize(image, [closestR*miniWindowSize closestC*miniWindowSize]);
 numR = closestR*miniWindowSize;
 numC = closestC*miniWindowSize;
 
-WINDOW_SIZE = desc_size;
-
-<<<<<<< HEAD
-WINDOW_SIZE = 128;
-hWindowNum = numR*numC/(hWindowSize^2);
-=======
 hWindowNum = numR*numC/(miniWindowSize^2);
->>>>>>> ea866be04ef4fbd5bf88bb451e46d97b319b7e98
 
 
-motherTemplate_3d = reshape((1:numR*numC*3),[numR numC 3]);
+
 motherTemplate_2d = reshape( (1:numR*numC),[numR numC] );
 
 
@@ -98,13 +72,10 @@ net_dim_adder = [add_dim1 add_dim2 add_dim3];
 
 windowUnrolled_dim3 = repmat(windowUnrolled,1,3);
 net_dim_adder_extend = repmat(net_dim_adder,windowNumC*windowNumR,1);
-<<<<<<< HEAD
-final_window_idx = windowUnrolled_dim3 + net_dim_adder_extend;
-
-toc
-=======
 final_winow_idx = windowUnrolled_dim3 + net_dim_adder_extend;
 toc
 
 netImageContentAllWindows = image(final_winow_idx);
->>>>>>> ea866be04ef4fbd5bf88bb451e46d97b319b7e98
+
+
+end
