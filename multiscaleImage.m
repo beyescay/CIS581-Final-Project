@@ -5,8 +5,8 @@ scale = [2 2^0.5 1 1/(2^0.5) 1/2];
 numR = size(image,1);
 numC = size(image,2);
 
-newNumR = round(numR/scale);
-newNumC = round(numC/scale);
+newNumR = round(numR./scale);
+newNumC = round(numC./scale);
 
 scaledImages{1} = imresize(image,[newNumR(1),newNumC(1)]);
 scaledImages{2} = imresize(image,[newNumR(2),newNumC(2)]);

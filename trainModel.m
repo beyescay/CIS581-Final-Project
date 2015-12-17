@@ -5,8 +5,8 @@ clc
 %Load all the face and non-face images
 addpath('./libsvm')
 addpath(sprintf('%s/customhog/',pwd))
-load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageFaces.mat')
-load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/imageNonFaces.mat')
+load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/Data/imageFacesFIW.mat')
+load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/Data/imageNonFacesFIW.mat')
 load('/Users/beyescay/Documents/Upenn/3rd Sem/CIS 581/Project 4/idx/idx.mat')
 customHOG_setup;
 run('vlfeat-0.9.20/toolbox/vl_setup')
