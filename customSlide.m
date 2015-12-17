@@ -1,13 +1,9 @@
-%% This is the vectorized attempt at the sliding window
-%  This implementation assumes color images 
-tic
-
+function netImageContentAllWindows = customSlide(image)
 
 global discretization;
 global desc_size;
-desc_size = 128;
+desc_size = 128;s
 
-image = imread('scene.jpg');
 [numR, numC, ~] = size(image);
 miniWindowSize = 32;
 discretization = desc_size/miniWindowSize;
@@ -22,12 +18,10 @@ image = imresize(image, [closestR*miniWindowSize closestC*miniWindowSize]);
 numR = closestR*miniWindowSize;
 numC = closestC*miniWindowSize;
 
-WINDOW_SIZE = desc_size;
-
 hWindowNum = numR*numC/(miniWindowSize^2);
 
 
-motherTemplate_3d = reshape((1:numR*numC*3),[numR numC 3]);
+
 motherTemplate_2d = reshape( (1:numR*numC),[numR numC] );
 
 
@@ -82,3 +76,6 @@ final_winow_idx = windowUnrolled_dim3 + net_dim_adder_extend;
 toc
 
 netImageContentAllWindows = image(final_winow_idx);
+
+
+end
